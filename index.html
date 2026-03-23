@@ -13,7 +13,16 @@
         <p class="game-tagline">Catch the good drops, avoid the bad ones!</p>
         <div class="score-panel">
             <div class="score">Score: <span id="score">0</span></div>
+            <div class="goal">Goal: <span id="goal">20</span></div>
             <div class="timer">Time: <span id="time">30</span>s</div>
+            <label class="mode-control" for="mode-select">
+                Mode
+                <select id="mode-select" aria-label="Select game difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="normal" selected>Normal</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </label>
             <button id="start-btn">Start Game</button>
             <button id="reset-btn" type="button">Reset</button>
         </div>
@@ -21,6 +30,15 @@
         
         <div id="game-container">
         </div>
+
+        <footer class="site-footer" aria-label="charity water links">
+            <p class="footer-title">Support charity: water</p>
+            <nav class="footer-links" aria-label="External links">
+                <a href="https://www.charitywater.org/main" target="_blank" rel="noopener noreferrer">Visit Website</a>
+                <a href="https://www.charitywater.org/donate" target="_blank" rel="noopener noreferrer">Donate Once</a>
+                <a href="https://www.charitywater.org/the-spring" target="_blank" rel="noopener noreferrer">Join The Spring</a>
+            </nav>
+        </footer>
     </div>
     
     <script src="script.js"></script>

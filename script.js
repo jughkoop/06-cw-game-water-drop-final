@@ -1,16 +1,49 @@
-const GAME_LENGTH = 30;
-const WIN_THRESHOLD = 20;
-const POLLUTED_DROP_CHANCE = 0.2;
+const BASE_GAME_LENGTH = 30;
+const BASE_WIN_THRESHOLD = 20;
+const BASE_POLLUTED_DROP_CHANCE = 0.2;
+const BASE_MIN_FALL_DURATION = 2.8;
+const BASE_FALL_DURATION_VARIANCE = 1.5;
 const CONFETTI_COUNT = 70;
+
+const gameModes = {
+  easy: {
+    gameLength: 45,
+    winThreshold: BASE_WIN_THRESHOLD / 2,
+    pollutedDropChance: 0.1,
+    minFallDuration: 3.6,
+    fallDurationVariance: 1.6
+  },
+  normal: {
+    gameLength: BASE_GAME_LENGTH,
+    winThreshold: BASE_WIN_THRESHOLD,
+    pollutedDropChance: BASE_POLLUTED_DROP_CHANCE,
+    minFallDuration: BASE_MIN_FALL_DURATION,
+    fallDurationVariance: BASE_FALL_DURATION_VARIANCE
+  },
+  hard: {
+    gameLength: 20,
+    winThreshold: BASE_WIN_THRESHOLD * 1.5,
+    pollutedDropChance: 0.35,
+    minFallDuration: 1.8,
+    fallDurationVariance: 1.2
+  }
+};
 
 let gameRunning = false;
 let score = 0;
-let timeLeft = GAME_LENGTH;
+let timeLeft = BASE_GAME_LENGTH;
+let currentGameLength = BASE_GAME_LENGTH;
+let currentWinThreshold = BASE_WIN_THRESHOLD;
+let currentPollutedDropChance = BASE_POLLUTED_DROP_CHANCE;
+let currentMinFallDuration = BASE_MIN_FALL_DURATION;
+let currentFallDurationVariance = BASE_FALL_DURATION_VARIANCE;
 let dropMaker;
 let timerTick;
 
 const scoreEl = document.getElementById("score");
+const goalEl = document.getElementById("goal");
 const timeEl = document.getElementById("time");
+const modeSelectEl = document.getElementById("mode-select");
 const startBtn = document.getElementById("start-btn");
 const resetBtn = document.getElementById("reset-btn");
 const gameContainer = document.getElementById("game-container");
@@ -24,7 +57,7 @@ const winningMessages = [
 ];
 
 const losingMessages = [
-  "Good try! Play again and see if you can hit 20.",
+  "Good try! Play again and see if you can hit the goal.",
   "So close. Keep going, you are getting faster!",
   "Nice effort! Another round could be your winning one.",
   "Keep practicing. Those drops will not escape next time!"
@@ -34,12 +67,17 @@ const confettiColors = ["#FFC907", "#2E9DF7", "#8BD1CB", "#4FCB53", "#FF902A"];
 
 startBtn.addEventListener("click", startGame);
 resetBtn.addEventListener("click", resetGame);
+modeSelectEl.addEventListener("change", handleModeChange);
+
+syncModeSettings();
 
 function startGame() {
   if (gameRunning) return;
 
+  syncModeSettings();
   resetGame();
   gameRunning = true;
+  modeSelectEl.disabled = true;
   startBtn.textContent = "Game Running...";
 
   dropMaker = setInterval(createDrop, 450);
@@ -50,10 +88,12 @@ function resetGame() {
   gameRunning = false;
   clearInterval(dropMaker);
   clearInterval(timerTick);
+  modeSelectEl.disabled = false;
 
   score = 0;
-  timeLeft = GAME_LENGTH;
+  timeLeft = currentGameLength;
   scoreEl.textContent = score;
+  goalEl.textContent = currentWinThreshold;
   timeEl.textContent = timeLeft;
   endMessageEl.textContent = "";
   endMessageEl.className = "end-message";
@@ -76,12 +116,13 @@ function endGame() {
   gameRunning = false;
   clearInterval(dropMaker);
   clearInterval(timerTick);
+  modeSelectEl.disabled = false;
 
-  const wonGame = score >= WIN_THRESHOLD;
+  const wonGame = score >= currentWinThreshold;
   const messages = wonGame ? winningMessages : losingMessages;
   const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
-  endMessageEl.textContent = randomMessage;
+  endMessageEl.textContent = wonGame ? randomMessage : `${randomMessage} Target: ${currentWinThreshold}.`;
   endMessageEl.className = `end-message ${wonGame ? "win" : "lose"}`;
   startBtn.textContent = "Play Again";
 
@@ -92,12 +133,28 @@ function endGame() {
   }
 }
 
+function handleModeChange() {
+  if (gameRunning) return;
+  syncModeSettings();
+  resetGame();
+}
+
+function syncModeSettings() {
+  const selectedMode = gameModes[modeSelectEl.value] ? modeSelectEl.value : "normal";
+  const modeSettings = gameModes[selectedMode];
+  currentGameLength = modeSettings.gameLength;
+  currentWinThreshold = modeSettings.winThreshold;
+  currentPollutedDropChance = modeSettings.pollutedDropChance;
+  currentMinFallDuration = modeSettings.minFallDuration;
+  currentFallDurationVariance = modeSettings.fallDurationVariance;
+}
+
 function createDrop() {
   if (!gameRunning) return;
 
   const drop = document.createElement("div");
   drop.classList.add("water-drop");
-  const isPollutedDrop = Math.random() < POLLUTED_DROP_CHANCE;
+  const isPollutedDrop = Math.random() < currentPollutedDropChance;
 
   if (isPollutedDrop) {
     drop.classList.add("bad-drop");
@@ -115,7 +172,7 @@ function createDrop() {
 
   const gameHeight = gameContainer.offsetHeight;
   drop.style.setProperty("--fall-distance", `${gameHeight + size + 30}px`);
-  drop.style.animationDuration = `${Math.random() * 1.5 + 2.8}s`;
+  drop.style.animationDuration = `${Math.random() * currentFallDurationVariance + currentMinFallDuration}s`;
 
   drop.addEventListener("click", () => {
     if (!gameRunning) return;
@@ -127,14 +184,20 @@ function createDrop() {
     }
 
     scoreEl.textContent = score;
-    drop.remove();
+    removeDropFromDom(drop);
   });
 
   drop.addEventListener("animationend", () => {
-    drop.remove();
+    removeDropFromDom(drop);
   });
 
   gameContainer.appendChild(drop);
+}
+
+function removeDropFromDom(dropEl) {
+  if (dropEl && dropEl.parentNode) {
+    dropEl.parentNode.removeChild(dropEl);
+  }
 }
 
 function clearConfetti() {

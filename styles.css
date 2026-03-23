@@ -29,10 +29,13 @@ Fonts:
     --cw-blue: #2E9DF7;
     --cw-light-blue: #8BD1CB;
     --cw-green: #4FCB53;
+    --cw-orange: #FF902A;
     --cw-red: #F5402C;
-    --cw-ink: #131313;
+    --cw-ink: #1a1a1a;
+    --cw-paper: #fffdf7;
     --cw-cloud: #f5fbff;
-    --panel-shadow: 0 16px 40px rgba(19, 19, 19, 0.16);
+    --cw-line: #d8e8f2;
+    --panel-shadow: 0 16px 40px rgba(19, 19, 19, 0.12);
 }
 
 body {
@@ -41,11 +44,11 @@ body {
     align-items: center;
     min-height: 100vh;
     background:
-        radial-gradient(circle at 20% 15%, rgba(255, 201, 7, 0.4), transparent 35%),
-        radial-gradient(circle at 80% 10%, rgba(46, 157, 247, 0.35), transparent 30%),
-        linear-gradient(165deg, #eaf8ff, #f7fffd 60%, #e6f7ff);
+        radial-gradient(circle at 12% 10%, rgba(255, 201, 7, 0.22), transparent 32%),
+        radial-gradient(circle at 88% 8%, rgba(46, 157, 247, 0.18), transparent 28%),
+        linear-gradient(180deg, #f8fcff 0%, #ffffff 65%, #f7fbff 100%);
     color: var(--cw-ink);
-    font-family: "Avenir Next", "Avenir", "Proxima Nova", "Segoe UI", sans-serif;
+    font-family: "Avenir Next", "Avenir", "Helvetica Neue", "Segoe UI", sans-serif;
     padding: 24px;
 }
 
@@ -55,12 +58,29 @@ body {
     align-items: center;
     gap: 16px;
     width: min(900px, 100%);
+    background: var(--cw-paper);
+    border: 1px solid var(--cw-line);
+    border-radius: 20px;
+    padding: 24px 20px 20px;
+    box-shadow: var(--panel-shadow);
+    position: relative;
+}
+
+.game-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    border-radius: 20px 20px 0 0;
+    background: linear-gradient(90deg, var(--cw-yellow) 0%, #ffd866 35%, var(--cw-blue) 100%);
 }
 
 .brand-logo {
     width: min(280px, 62vw);
     height: auto;
-    margin-bottom: 4px;
+    margin: 10px 0 2px;
 }
 
 .score-panel {
@@ -73,23 +93,59 @@ body {
     padding: 14px 18px;
     background-color: #fff;
     border-radius: 14px;
-    border: 2px solid rgba(46, 157, 247, 0.28);
-    box-shadow: 0 6px 18px rgba(46, 157, 247, 0.18);
+    border: 1px solid var(--cw-line);
+    box-shadow: 0 6px 16px rgba(25, 34, 43, 0.06);
 }
 
 .timer {
     flex: 0 1 auto;
     font-size: clamp(20px, 3.5vw, 28px);
-    font-weight: bold;
+    font-weight: 700;
+    font-family: "Proxima Nova", "Avenir Next", sans-serif;
     color: var(--cw-blue);
+}
+
+.goal {
+    flex: 0 1 auto;
+    font-size: clamp(20px, 3.5vw, 28px);
+    font-weight: 700;
+    font-family: "Proxima Nova", "Avenir Next", sans-serif;
+    color: #1f6fa7;
+}
+
+.mode-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    color: #35556d;
+    text-transform: uppercase;
+}
+
+#mode-select {
+    min-width: 120px;
+    padding: 8px 10px;
+    border: 1px solid #b5cad9;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #1b3b52;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#mode-select:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
 }
 
 #game-container {
     width: min(820px, 100%);
     height: min(620px, 72vh);
     background:
-        linear-gradient(180deg, #f4fdff 0%, #d8f1ff 65%, #cbeeff 100%);
-    border: 3px solid rgba(46, 157, 247, 0.42);
+        linear-gradient(180deg, #f9fdff 0%, #e8f6ff 72%, #dcf1ff 100%);
+    border: 2px solid #a5d4f6;
     border-radius: 16px;
     position: relative;
     overflow: hidden;
@@ -99,34 +155,36 @@ body {
 
 #start-btn {
     padding: 10px 18px;
-    background-color: var(--cw-green);
-    color: #fff;
-    border: none;
+    background-color: var(--cw-yellow);
+    color: #121212;
+    border: 1px solid #e0b300;
     border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 700;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.3px;
+    font-family: "Proxima Nova", "Avenir Next", sans-serif;
     transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
 }
 
 #reset-btn {
     padding: 10px 18px;
-    background-color: #fff;
-    color: #2a4a61;
-    border: 2px solid rgba(46, 157, 247, 0.5);
+    background-color: #ffffff;
+    color: #134465;
+    border: 1px solid #aacbe2;
     border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 700;
     letter-spacing: 0.2px;
+    font-family: "Proxima Nova", "Avenir Next", sans-serif;
     transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
 #start-btn:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(79, 203, 83, 0.35);
-    background-color: #41bf48;
+    box-shadow: 0 6px 16px rgba(255, 201, 7, 0.38);
+    background-color: #ffd232;
 }
 
 #start-btn:active {
@@ -135,8 +193,8 @@ body {
 
 #reset-btn:hover {
     transform: translateY(-1px);
-    border-color: rgba(46, 157, 247, 0.82);
-    box-shadow: 0 6px 16px rgba(46, 157, 247, 0.22);
+    border-color: #67ade0;
+    box-shadow: 0 6px 16px rgba(46, 157, 247, 0.2);
 }
 
 #reset-btn:active {
@@ -146,7 +204,8 @@ body {
 .score {
     flex: 0 1 auto;
     font-size: clamp(20px, 3.5vw, 28px);
-    font-weight: bold;
+    font-family: "Proxima Nova", "Avenir Next", sans-serif;
+    font-weight: 700;
     color: var(--cw-ink);
 }
 
@@ -203,6 +262,9 @@ body {
 .game-title {
     color: var(--cw-ink);
     font-size: clamp(40px, 6vw, 56px);
+    font-family: "Proxima Nova", "Avenir Next", sans-serif;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
     margin-top: 0;
     margin-bottom: 4px;
     text-align: center;
@@ -211,6 +273,7 @@ body {
 .game-tagline {
     color: #35556d;
     font-size: clamp(16px, 2.4vw, 20px);
+    font-family: "Avenir Next", "Avenir", "Segoe UI", sans-serif;
     margin-bottom: 8px;
     text-align: center;
 }
@@ -221,6 +284,7 @@ body {
     text-align: center;
     font-size: clamp(18px, 2.6vw, 26px);
     font-weight: 800;
+    font-family: "Proxima Nova", "Avenir Next", sans-serif;
     color: var(--cw-ink);
     padding: 6px 10px;
 }
@@ -231,6 +295,57 @@ body {
 
 .end-message.lose {
     color: var(--cw-red);
+}
+
+.site-footer {
+    width: min(820px, 100%);
+    background-color: #fff;
+    border: 1px solid var(--cw-line);
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 6px 16px rgba(25, 34, 43, 0.06);
+}
+
+.footer-title {
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 800;
+    font-family: "Proxima Nova", "Avenir Next", sans-serif;
+    color: #1d415f;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.footer-links a {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid #e0b300;
+    color: #111;
+    background-color: var(--cw-yellow);
+    font-weight: 700;
+    font-family: "Proxima Nova", "Avenir Next", sans-serif;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.footer-links a:hover {
+    transform: translateY(-1px);
+    border-color: #c79d00;
+    box-shadow: 0 6px 14px rgba(255, 201, 7, 0.35);
+}
+
+.footer-links a:focus-visible {
+    outline: 3px solid rgba(255, 201, 7, 0.9);
+    outline-offset: 2px;
 }
 
 @keyframes dropFall {
@@ -274,5 +389,14 @@ body {
     #reset-btn {
         width: 100%;
         max-width: 260px;
+    }
+
+    .site-footer {
+        padding: 12px;
+    }
+
+    .footer-links a {
+        width: 100%;
+        text-align: center;
     }
 }
