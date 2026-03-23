@@ -1,0 +1,278 @@
+/* Charity: water Brand Colors & Fonts
+
+Primary Colors:
+- Yellow:     #FFC907
+- Blue:       #2E9DF7
+
+Secondary Colors:
+- Light Blue: #8BD1CB
+- Green:      #4FCB53
+- Orange:     #FF902A
+- Red:        #F5402C
+- Dark Green: #159A48
+- Pink:       #F16061
+
+Fonts:
+- Proxima Nova
+- Avenir
+
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --cw-yellow: #FFC907;
+    --cw-blue: #2E9DF7;
+    --cw-light-blue: #8BD1CB;
+    --cw-green: #4FCB53;
+    --cw-red: #F5402C;
+    --cw-ink: #131313;
+    --cw-cloud: #f5fbff;
+    --panel-shadow: 0 16px 40px rgba(19, 19, 19, 0.16);
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 20% 15%, rgba(255, 201, 7, 0.4), transparent 35%),
+        radial-gradient(circle at 80% 10%, rgba(46, 157, 247, 0.35), transparent 30%),
+        linear-gradient(165deg, #eaf8ff, #f7fffd 60%, #e6f7ff);
+    color: var(--cw-ink);
+    font-family: "Avenir Next", "Avenir", "Proxima Nova", "Segoe UI", sans-serif;
+    padding: 24px;
+}
+
+.game-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: min(900px, 100%);
+}
+
+.brand-logo {
+    width: min(280px, 62vw);
+    height: auto;
+    margin-bottom: 4px;
+}
+
+.score-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: min(820px, 100%);
+    padding: 14px 18px;
+    background-color: #fff;
+    border-radius: 14px;
+    border: 2px solid rgba(46, 157, 247, 0.28);
+    box-shadow: 0 6px 18px rgba(46, 157, 247, 0.18);
+}
+
+.timer {
+    flex: 0 1 auto;
+    font-size: clamp(20px, 3.5vw, 28px);
+    font-weight: bold;
+    color: var(--cw-blue);
+}
+
+#game-container {
+    width: min(820px, 100%);
+    height: min(620px, 72vh);
+    background:
+        linear-gradient(180deg, #f4fdff 0%, #d8f1ff 65%, #cbeeff 100%);
+    border: 3px solid rgba(46, 157, 247, 0.42);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--panel-shadow);
+}
+
+
+#start-btn {
+    padding: 10px 18px;
+    background-color: var(--cw-green);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+#reset-btn {
+    padding: 10px 18px;
+    background-color: #fff;
+    color: #2a4a61;
+    border: 2px solid rgba(46, 157, 247, 0.5);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+#start-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(79, 203, 83, 0.35);
+    background-color: #41bf48;
+}
+
+#start-btn:active {
+    transform: translateY(0);
+}
+
+#reset-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(46, 157, 247, 0.82);
+    box-shadow: 0 6px 16px rgba(46, 157, 247, 0.22);
+}
+
+#reset-btn:active {
+    transform: translateY(0);
+}
+
+.score {
+    flex: 0 1 auto;
+    font-size: clamp(20px, 3.5vw, 28px);
+    font-weight: bold;
+    color: var(--cw-ink);
+}
+
+.water-drop {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background:
+        radial-gradient(circle at 28% 26%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.35) 26%, transparent 46%),
+        linear-gradient(185deg, #92d5ff 0%, #2E9DF7 58%, #1b7ecf 100%);
+    border-radius: 58% 58% 70% 70%;
+    clip-path: polygon(50% 0%, 74% 24%, 86% 50%, 84% 68%, 76% 82%, 64% 92%, 50% 96%, 36% 92%, 24% 82%, 16% 68%, 14% 50%, 26% 24%);
+    animation: dropFall linear forwards;
+    transform-origin: center;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(46, 157, 247, 0.25);
+    transition: transform 0.1s ease;
+}
+
+.water-drop::before {
+    content: "";
+    position: absolute;
+    width: 38%;
+    height: 30%;
+    left: 18%;
+    top: 14%;
+    border-radius: 55% 55% 62% 62%;
+    background: rgba(255, 255, 255, 0.55);
+    transform: rotate(-6deg);
+}
+
+.water-drop:hover {
+    filter: brightness(1.06);
+}
+
+.bad-drop {
+    background:
+        radial-gradient(circle at 28% 26%, rgba(255, 245, 225, 0.6), rgba(255, 245, 225, 0.2) 24%, transparent 46%),
+        linear-gradient(185deg, #7a5a3a 0%, #4b3321 58%, #2f1f14 100%);
+    box-shadow: 0 8px 16px rgba(47, 31, 20, 0.38);
+}
+
+.confetti-piece {
+    position: absolute;
+    top: -18px;
+    width: 8px;
+    height: 16px;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 15;
+    animation: confettiFall ease-in forwards;
+}
+
+.game-title {
+    color: var(--cw-ink);
+    font-size: clamp(40px, 6vw, 56px);
+    margin-top: 0;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.game-tagline {
+    color: #35556d;
+    font-size: clamp(16px, 2.4vw, 20px);
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.end-message {
+    min-height: 34px;
+    width: min(820px, 100%);
+    text-align: center;
+    font-size: clamp(18px, 2.6vw, 26px);
+    font-weight: 800;
+    color: var(--cw-ink);
+    padding: 6px 10px;
+}
+
+.end-message.win {
+    color: var(--cw-green);
+}
+
+.end-message.lose {
+    color: var(--cw-red);
+}
+
+@keyframes dropFall {
+    from {
+        transform: translateY(-26px);
+    }
+    to {
+        transform: translateY(var(--fall-distance, 700px));
+    }
+}
+
+@keyframes confettiFall {
+    from {
+        transform: translate3d(0, -10px, 0) rotate(0deg);
+        opacity: 1;
+    }
+    to {
+        transform: translate3d(var(--drift, 0px), calc(var(--fall-distance, 700px) - 24px), 0) rotate(var(--spin, 240deg));
+        opacity: 0.92;
+    }
+}
+
+@media (max-width: 850px) {
+    body {
+        padding: 14px;
+    }
+
+    .score-panel {
+        justify-content: center;
+    }
+
+    #game-container {
+        height: min(520px, 68vh);
+    }
+
+    #start-btn {
+        width: 100%;
+        max-width: 260px;
+    }
+
+    #reset-btn {
+        width: 100%;
+        max-width: 260px;
+    }
+}
